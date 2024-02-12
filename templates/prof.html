@@ -1,11 +1,19 @@
 {% extends "base.html" %}
 
 {% block content %}
-    {% if "инженер" in prof or "строитель" in prof %}
-        <h2>Инженерные тренажеры</h2>
-        <img src="/static/img/звезда_инж.png">
+    {% if list == 'ol' %}
+    <ol>
+        {% for prof in list_prof['prof'] %}
+            <li>{{prof}}</li>
+        {% endfor %}
+    </ol>
+    {% elif list == 'ul' %}
+    <ul>
+        {% for prof in list_prof['prof'] %}
+            <li>{{prof}}</li>
+        {% endfor %}
+    </ul>
     {% else %}
-        <h2>Научные симуляторы</h2>
-        <img src="/static/img/звезда_науч.png">
-    {% endif %}
+        <h2>НЕВЕРНЫЙ ПАРАМЕТР</h2>
+        {% endif %}
 {% endblock %}
