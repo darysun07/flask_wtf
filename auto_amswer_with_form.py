@@ -105,9 +105,9 @@ def auto_answer():
         data = dict()
         data["title"] = 'Анкета'
         if request.form.get('surname', "-") == '':
-            data["surname"] = 'Нет фамилии к сожалению'
+            data["surname"] = 'фамилии не имеется'
         if request.form.get('name', "-") == '':
-            data["name"] = 'Нет имени к сожалению'
+            data["name"] = 'имени не имеется'
         data["education"] = request.form.get('class', "")
         data["profession"] = request.form.get('prof', "")
         data["sex"] = request.form.get('sex', "")
