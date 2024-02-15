@@ -4,8 +4,9 @@ from flask import render_template
 app = Flask(__name__)
 
 
-@app.route('/astronaut_selection', methods=['POST', 'GET'])
-def astronaut_selection():
+@app.route('/answer')
+@app.route('/auto_answer', methods=['POST', 'GET'])
+def auto_answer():
     if request.method == 'GET':
         return f'''<!doctype html>
                 <html lang="en">
@@ -35,18 +36,39 @@ def astronaut_selection():
                                   <option>Высшее</option>
                                 </select>
                               </div>
-                                <br><label for="work">Какие у Вас есть профессии?</label>
-                            <div class="form-group form-check">
-                                <input type="checkbox" class="form-check-input" id="prof" name="prof1">
-                                <label class="form-check-label" for="acceptRules">Инженер-исследователь</label>
-                                <br><input type="checkbox" class="form-check-input" id="prof" name="prof2">
-                                <label class="form-check-label" for="acceptRules">Пилот</label>
-                                <br><input type="checkbox" class="form-check-input" id="prof" name="prof3">
-                                <label class="form-check-label" for="acceptRules">Врач</label>
-                                <br><input type="checkbox" class="form-check-input" id="prof" name="prof4">
-                                <label class="form-check-label" for="acceptRules">Учитель</label>
-                                <br><input type="checkbox" class="form-check-input" id="prof" name="prof5">
-                                <label class="form-check-label" for="acceptRules">Метеоролог</label>
+                            
+                            <div class="form-group">
+                                <label for="form-check">Какие у Вас есть профессии?</label>
+                                <div class="form-check">
+                                  <input class="form-check-input" type="radio" name="prof" id="prof1" value="Инженер-исследователь" checked>
+                                  <label class="form-check-label" for="prof">
+                                    Инженер-исследователь
+                                  </label>
+                                </div>
+                                <div class="form-check">
+                                  <input class="form-check-input" type="radio" name="prof" id="prof2" value="Пилот">
+                                  <label class="form-check-label" for="prof">
+                                    Пилот
+                                  </label>
+                                </div>
+                                <div class="form-check">
+                                  <input class="form-check-input" type="radio" name="prof" id="prof3" value="Врач">
+                                  <label class="form-check-label" for="prof">
+                                    Врач
+                                  </label>
+                                </div>
+                                <div class="form-check">
+                                  <input class="form-check-input" type="radio" name="prof" id="prof4" value="Учитель">
+                                  <label class="form-check-label" for="prof">
+                                    Учитель
+                                  </label>
+                                </div>
+                                <div class="form-check">
+                                  <input class="form-check-input" type="radio" name="prof" id="prof5" value="Метеоролог">
+                                  <label class="form-check-label" for="prof">
+                                    Метеоролог
+                                  </label>
+                                </div>
                             </div>
 
                             <div class="form-group">
@@ -80,18 +102,19 @@ def astronaut_selection():
                   </body>
                 </html>'''
     elif request.method == 'POST':
-        print(request.form.get('surname', ""))
-        print(request.form.get('name', ""))
-        print(request.form.get('class', ""))
-        print(request.form.get('prof1', ""))
-        print(request.form.get('prof2', ""))
-        print(request.form.get('prof3', ""))
-        print(request.form.get('prof4', ""))
-        print(request.form.get('prof5', ""))
-        print(request.form.get('sex', ""))
-        print(request.form.get('about', ""))
-        print(request.form.get('hello', ""))
-        return "Форма отправлена"
+        data = dict()
+        data["title"] = 'Анкета'
+        if request.form.get('surname', "-") == '':
+            data["surname"] = 'Нет фамилии к сожалению'
+        if request.form.get('name', "-") == '':
+            data["name"] = 'Нет имени к сожалению'
+        data["education"] = request.form.get('class', "")
+        data["profession"] = request.form.get('prof', "")
+        data["sex"] = request.form.get('sex', "")
+        if request.form.get('about', "") == '':
+            data["motivation"] = "не хочу в этом участвовать("
+        data["ready"] = request.form.get('hello', "no")
+        return render_template('auto_answer.html', **data)
 
 
 if __name__ == '__main__':
